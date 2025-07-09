@@ -1,0 +1,156 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Discover the top tech gadgets of 2025. Get exclusive deals on smartphones, smartwatches, and more.">
+  <meta name="keywords" content="tech gadgets, 2025 tech, best smartphones, smartwatches, smart home">
+  <title>Top Tech Gadgets 2025</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+      text-align: center;
+    }
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 2rem;
+    }
+    h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .product {
+      background: white;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .product img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      background-color: #28a745;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 1rem;
+    }
+    .btn:hover {
+      background-color: #218838;
+    }
+    footer {
+      background-color: #333;
+      color: white;
+      padding: 1rem;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Top Tech Gadgets of 2025</h1>
+    <p>Explore the latest tech products and grab exclusive deals!</p>
+  </header>
+  <div class="container">
+    <div class="product">
+      <h2>Google Pixel 9 Pro</h2>
+      <!-- Replace the src with your Amazon/Flipkart image URL -->
+      <img src="https://m.media-amazon.com/images/I/61vPDPr-RzL._SL1500_.jpg" alt="Google Pixel 9 Pro">
+      <p>AI-powered smartphone with 120 Hz display and Tensor G3 chip.</p>
+      <!-- Replace the href with your Amazon/Flipkart affiliate link -->
+      <a href="https://amzn.to/3U2ma68" class="btn">Check Price</a>
+    </div>
+    <div class="product">
+      <h2>Apple Watch Series 11</h2>
+      <!-- Replace the src with your Amazon/Flipkart image URL -->
+      <img src="https://m.media-amazon.com/images/I/81kq5wkaqAL._SL1500_.jpg" alt="Apple Watch Series 11">
+      <p>Advanced health tracking and AI features in a sleek smartwatch.</p>
+      <!-- Replace the href with your Amazon/Flipkart affiliate link -->
+      <a href="https://amzn.to/4lmwuC9" class="btn">Check Price</a>
+    </div>
+    <div class="product">
+      <h2>Sony WF-1000XM6</h2>
+      <!-- Replace the src with your Amazon/Flipkart image URL -->
+      <img src="https://m.media-amazon.com/images/I/61GJAFdM9pL._SL1500_.jpg" alt="Sony WF-1000XM6">
+      <p>Noise-canceling wireless earbuds with real-time translation.</p>
+      <!-- Replace the href with your Amazon/Flipkart affiliate link -->
+      <a href="https://amzn.to/40Hx30Q" class="btn">Check Price</a>
+    </div>
+    <div class="product">
+      <h2>Apple 2024 MacBook Air 15 Laptop with M3 chip</h2>
+      <!-- Replace the src with your Amazon/Flipkart image URL -->
+      <img src="https://m.media-amazon.com/images/I/71h-tsPzk5L._SL1500_.jpg" alt="MacBook Air M3">
+      <p>Powerful M3 chip and 16GB RAM, perfect for remote work.</p>
+      <!-- Replace the href with your Amazon/Flipkart affiliate link -->
+      <a href="https://amzn.to/44jrbgK" class="btn">Check Price</a>
+    </div>
+    <div class="product">
+      <h2>Amazon Echo (5th Gen)</h2>
+      <!-- Replace the src with your Amazon/Flipkart image URL -->
+      <img src="https://m.media-amazon.com/images/I/81hgjKwsdHL._SL1500_.jpg" alt="Amazon Echo">
+      <p>Latest Echo device with voice assistant and smart home control.</p>
+      <!-- Replace the href with your Amazon/Flipkart affiliate link -->
+      <a href="https://amzn.to/3U1qCC9" class="btn">Check Price</a>
+    </div>
+  </div>
+  <footer>
+    <p>© 2025 Top Tech Gadgets. All rights reserved. Affiliate links used.</p>
+  </footer>
+</body>
+</html>
